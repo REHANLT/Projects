@@ -171,11 +171,18 @@ def jarvis():
                 response = client.models.generate_content(
                     model="gemini-3.6-flash", contents=command
                 )
-                speak(response.text)
+
+                # Response check: ensure text exists before speaking
+                if response and hasattr(response, "text") and response.text:
+                    speak(response.text)
+                else:
+                    speak("I received an empty response.")
+
             except Exception as e:
-                print(f"Gemini Error: {e}")
-                speak("I encountered an error processing your request.")
-
-
+                print(f"[DEBUG Error]: {e}")
+                speak(
+                    f"I encountered an error. Check terminal for details."
+                )
+                
 if __name__ == "__main__":
     jarvis()
